@@ -2,17 +2,9 @@
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Alessandro1040/pianovam-quickstart/blob/main/pianovam_quickstart.ipynb)
 
-> **Questa repo e' privata**: il badge qui sopra funziona solo con un repository pubblico,
-> altrimenti Colab risponde *"Notebook not found"* (verificato: l'URL raw risponde 404 senza
-> token, 200 con token). Con la repo privata si apre cosi', in due minuti:
->
-> 1. scarica il notebook da GitHub (*Download raw file*, da loggato);
-> 2. vai su [colab.research.google.com](https://colab.research.google.com) →
->    *File → Apri notebook → Carica* e scegli `pianovam_quickstart.ipynb`;
-> 3. in alternativa caricalo su Google Drive e aprilo da li' con *File → Apri notebook →
->    Google Drive* (cosi' resta salvato nel tuo Drive).
->
-> Il dataset va scaricato a parte (vedi sotto): il notebook non contiene dati, solo codice.
+Clicca il badge **Open in Colab** qui sopra per aprirlo direttamente in Colab (repo pubblico,
+quindi il badge funziona). In alternativa: scarica il file e usalo con *File → Apri notebook →
+Carica*, oppure salvalo su Google Drive e aprilo da li'.
 
 Prova minima sul dataset multimodale [**PianoVAM v1.2**](https://huggingface.co/datasets/PianoVAM/PianoVAM_v1):
 il notebook prende il dataset **gia' scaricato** (in locale o su Google Drive) e mostra
