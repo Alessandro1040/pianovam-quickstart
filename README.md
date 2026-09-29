@@ -30,35 +30,46 @@ Nella cella di configurazione si scelgono `DATASET_ROOT`, `RECORD_INDEX` (0..106
 
 ## Uso
 
-1. **Scarica il dataset una volta sola** (~45 GB con i video):
+Apri il notebook in Colab e **esegui le celle dall'alto in basso**: non serve preparare nulla.
 
-   ```bash
-   pip install huggingface_hub
-   huggingface-cli download PianoVAM/PianoVAM_v1 --repo-type dataset --local-dir ./PianoVAM_v1.2
-   ```
-
-2. Apri `pianovam_quickstart.ipynb` in Colab e indica dove sta la cartella:
+1. La cella **DATASET** sistema il dataset da sola e si puo' rieseguire quante volte vuoi:
+   - se il dataset **non c'e'**, scarica dal Hub **una sola registrazione** (TSV, MIDI e
+     `Fingering/`: pochi KB, parte in pochi secondi);
+   - se il dataset **c'e' gia'** (anche su Google Drive) non scarica nulla e non usa la rete.
+2. Vuoi **tutte le modalita'**? Nella stessa cella metti `DOWNLOAD_MEDIA = True` (Audio ~65 MB
+   + Video ~340 MB) e `DOWNLOAD_SKELETON = True` (Handskeleton ~120 MB), poi riesegui la cella:
+   scarica solo cio' che manca.
+3. Hai il dataset su **Google Drive**? Monta il Drive e cambia `DATASET_ROOT` nella cella di
+   configurazione (le righe sono gia' pronte, commentate):
 
    ```python
-   DATASET_ROOT = "/content/drive/MyDrive/PianoVAM_v1.2"   # se e' su Google Drive
-   # DATASET_ROOT = "PianoVAM_v1.2"                        # se e' accanto al notebook
+   from google.colab import drive
+   drive.mount("/content/drive")
+   DATASET_ROOT = "/content/drive/MyDrive/PianoVAM_v1.2"
    ```
 
-3. Esegui le celle in ordine.
+Per avere il dataset completo in locale (~45 GB con i video), una volta sola da terminale:
 
-Se non hai ancora il dataset, la cella 1 del notebook sa scaricare **una sola registrazione**
-(pochi MB senza audio/video) e c'e' il flag `DOWNLOAD_MEDIA = True` per includere anche
-il WAV e l'MP4.
+```bash
+pip install huggingface_hub
+huggingface-cli download PianoVAM/PianoVAM_v1 --repo-type dataset --local-dir ./PianoVAM_v1.2
+```
 
 ## Requisiti
 
-`pandas` e `mido` (`pip install mido`), `ffmpeg`/`ffprobe` per l'estratto audio e per le
-informazioni del video. In Colab sono tutti gia' presenti tranne `mido`, e il notebook
-funziona comunque avvisando di cosa manca.
+`pandas` e, per i dettagli del MIDI, `mido` (`pip install mido`); `ffmpeg`/`ffprobe` servono
+per l'estratto audio e per le informazioni del video. In Colab `pandas` e `ffmpeg` sono gia'
+presenti, `mido` no: il notebook funziona comunque e avvisa di cosa manca. La cella DATASET
+usa `huggingface_hub` solo se deve scaricare (in Colab c'e' gia').
 
 ## Output atteso (estratto, registrazione `2024-02-14_19-10-09`)
 
 ```
+Registrazione 2024-02-14_19-10-09 : i file necessari ci sono gia' in PianoVAM_v1.2 - non scarico nulla.
+Cartella dataset : /content/PianoVAM_v1.2
+Registrazioni    : 107
+Split            : {'train': 53, 'test': 9, 'valid': 9, 'special(4hands)': 1, 'special(blurry)': 7, 'ext-train': 28}
+
 Tutti i campi di questa registrazione:
   record_time       : 2024-02-14_19-10-09
   split             : train
