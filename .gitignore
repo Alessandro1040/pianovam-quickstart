@@ -1,0 +1,9 @@
+# dati scaricati in locale: pesano decine di GB, non vanno nel repo
+PianoVAM_v1.2/
+PianoVAM_v1/
+metadata.json
+
+# file temporanei / di sviluppo
+__pycache__/
+.venv/
+.DS_Store
