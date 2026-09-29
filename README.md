@@ -36,9 +36,12 @@ Apri il notebook in Colab e **esegui le celle dall'alto in basso**: non serve pr
    - se il dataset **non c'e'**, scarica dal Hub **una sola registrazione** (TSV, MIDI e
      `Fingering/`: pochi KB, parte in pochi secondi);
    - se il dataset **c'e' gia'** (anche su Google Drive) non scarica nulla e non usa la rete.
-2. Vuoi **tutte le modalita'**? Nella stessa cella metti `DOWNLOAD_MEDIA = True` (Audio ~65 MB
-   + Video ~340 MB) e `DOWNLOAD_SKELETON = True` (Handskeleton ~120 MB), poi riesegui la cella:
-   scarica solo cio' che manca.
+   Se salti questa cella non e' un problema: la cella che legge `metadata.json` scarica da
+   sola la registrazione che le serve e, se non riesce, stampa il motivo e le due strade
+   possibili (Drive montato oppure download dal Hub).
+2. Vuoi **tutte le modalita'**? Fra i flag della cella 0 (CONFIGURAZIONE) metti
+   `DOWNLOAD_MEDIA = True` (Audio ~65 MB + Video ~340 MB) e `DOWNLOAD_SKELETON = True`
+   (Handskeleton ~120 MB), poi riesegui la cella DATASET: scarica solo cio' che manca.
 3. Hai il dataset su **Google Drive**? Monta il Drive e cambia `DATASET_ROOT` nella cella di
    configurazione (le righe sono gia' pronte, commentate):
 
