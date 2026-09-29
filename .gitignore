@@ -7,3 +7,6 @@ metadata.json
 __pycache__/
 .venv/
 .DS_Store
+
+# script di sviluppo del notebook (non fanno parte del repo)
+_*.py

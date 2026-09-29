@@ -1,6 +1,6 @@
 # PianoVAM v1.2 - Colab quickstart
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Alessandro1040/pianovam-colab-demo/blob/main/pianovam_quickstart.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Alessandro1040/pianovam-quickstart/blob/main/pianovam_quickstart.ipynb)
 
 Prova minima sul dataset multimodale [**PianoVAM v1.2**](https://huggingface.co/datasets/PianoVAM/PianoVAM_v1):
 il notebook prende il dataset **gia' scaricato** (in locale o su Google Drive) e mostra
