@@ -8,7 +8,8 @@ Carica*, oppure salvalo su Google Drive e aprilo da li'.
 
 Prova minima sul dataset multimodale [**PianoVAM v1.2**](https://huggingface.co/datasets/PianoVAM/PianoVAM_v1):
 il notebook prende il dataset **gia' scaricato** (in locale o su Google Drive) e mostra
-**tutte le informazioni di un singolo esempio**, senza riscaricare nulla.
+**tutte le informazioni di un singolo esempio**; i file testuali li scarica da solo se mancano
+(pochi KB) e i media (audio, video, scheletro) solo quando esegui la cella che li mostra.
 
 Il file da aprire e' `pianovam_quickstart.ipynb`.
 
@@ -22,8 +23,8 @@ Il file da aprire e' `pianovam_quickstart.ipynb`.
 | 5 | il `MIDI/`: formato, tracce, tempo, programmi, numero di note, ambito di altezza e prime 5 note (richiede `mido`) |
 | 6 | lo `Handskeleton/`: numero di frame e landmark del primo frame (il file pesa ~120 MB: caricamento opzionale) |
 | 7 | l'`Audio/`: sample rate, canali, bit, campioni, durata + estratto di 8 s da ascoltare in Colab |
-| 8 | il `Video/`: codec, risoluzione, fps, durata (richiede `ffprobe`) |
-| 9 | il riepilogo di **tutti i file** della registrazione (presente / dimensione) e la scheda riassuntiva |
+| 8 | il `Video/`: codec, risoluzione, fps, durata + estratto dei primi 15 s da guardare in Colab |
+| 9 | il riepilogo di **tutti i file** della registrazione (presente / dimensione), cosa manca e come averlo, e la scheda riassuntiva |
 
 Nella cella di configurazione si scelgono `DATASET_ROOT`, `RECORD_INDEX` (0..106) oppure
 `RECORD_TIME` (es. `"2024-02-14_19-10-09"`).
@@ -39,9 +40,13 @@ Apri il notebook in Colab e **esegui le celle dall'alto in basso**: non serve pr
    Se salti questa cella non e' un problema: la cella che legge `metadata.json` scarica da
    sola la registrazione che le serve e, se non riesce, stampa il motivo e le due strade
    possibili (Drive montato oppure download dal Hub).
-2. Vuoi **tutte le modalita'**? Fra i flag della cella 0 (CONFIGURAZIONE) metti
-   `DOWNLOAD_MEDIA = True` (Audio ~65 MB + Video ~340 MB) e `DOWNLOAD_SKELETON = True`
-   (Handskeleton ~120 MB), poi riesegui la cella DATASET: scarica solo cio' che manca.
+2. **Audio, video e scheletro arrivano da soli quando servono**: la cella dell'audio, quella del
+   video e quella dello scheletro scaricano il file che manca appena le esegui
+   (`AUTO_DOWNLOAD_MEDIA = True`: nessun pre-download da 500 MB). Il video lo vedi come
+   **estratto di 15 s a 640 px**, perche' 324 MB dentro l'output del notebook non ci stanno: il
+   file completo resta sul disco e il percorso viene stampato. Vuoi tutto subito? Nella cella 0
+   metti `DOWNLOAD_MEDIA = True` (Audio ~65 MB + Video ~324 MB) e `DOWNLOAD_SKELETON = True`
+   (Handskeleton ~120 MB), poi riesegui la cella DATASET.
 3. Hai il dataset su **Google Drive**? Monta il Drive e cambia `DATASET_ROOT` nella cella di
    configurazione (le righe sono gia' pronte, commentate):
 
@@ -61,9 +66,10 @@ huggingface-cli download PianoVAM/PianoVAM_v1 --repo-type dataset --local-dir ./
 ## Requisiti
 
 `pandas` e, per i dettagli del MIDI, `mido` (`pip install mido`); `ffmpeg`/`ffprobe` servono
-per l'estratto audio e per le informazioni del video. In Colab `pandas` e `ffmpeg` sono gia'
-presenti, `mido` no: il notebook funziona comunque e avvisa di cosa manca. La cella DATASET
-usa `huggingface_hub` solo se deve scaricare (in Colab c'e' gia').
+per l'estratto audio, per le informazioni del video e per l'estratto video da guardare. In Colab
+`pandas` e `ffmpeg` sono gia' presenti, `mido` no: il notebook funziona comunque e avvisa di cosa
+manca. Le celle DATASET/metadata/audio/video/scheletro usano `huggingface_hub` solo quando devono
+davvero scaricare (in Colab c'e' gia').
 
 ## Output atteso (estratto, registrazione `2024-02-14_19-10-09`)
 
@@ -101,6 +107,19 @@ Altezze          : A0 - B7 (MIDI 21 - 107)
 
 Handskeleton/2024-02-14_19-10-09.json  ->  113.8 MB
 Frame presenti   : 44731 (dal 0 al 44730)
+
+Video/2024-02-14_19-10-09.mp4  ->  323.8 MB
+Video : h264 1920x1080, 60.00 fps, 44731 frame
+Audio : aac, 44100 Hz, 2 canali
+Durata: 745.52 s
+
+Estratto dei primi 15 s a 640 px (570.4 KB):
+File completo: /content/PianoVAM_v1.2/Video/2024-02-14_19-10-09.mp4
+
+Non ancora sul disco: Fingering_GT/2024-02-14_19-10-09.tsv
+Le celle di quelle modalita' se li scaricano da sole quando le esegui
+(AUTO_DOWNLOAD_MEDIA = True). Per averli tutti subito: DOWNLOAD_MEDIA = True e
+DOWNLOAD_SKELETON = True nella cella 0, poi riesegui la cella DATASET.
 ```
 
 I numeri sono coerenti fra le modalita': le 6.935 note del `TSV/` sono le 6.935 `note_on` del
