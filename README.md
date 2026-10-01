@@ -11,7 +11,57 @@ il notebook prende il dataset **gia' scaricato** (in locale o su Google Drive) e
 **tutte le informazioni di un singolo esempio**; i file testuali li scarica da solo se mancano
 (pochi KB) e i media (audio, video, scheletro) solo quando esegui la cella che li mostra.
 
-Il file da aprire e' `pianovam_quickstart.ipynb`.
+Il file del dataset è `pianovam_quickstart.ipynb`, quello video → MIDI è `pianovam_video2midi.ipynb`.
+
+## I due notebook
+
+| file | cosa fa | aprilo |
+|---|---|---|
+| `pianovam_quickstart.ipynb` | mostra **tutte le informazioni di un esempio del dataset**: metadata, TSV, diteggiatura, MIDI, scheletro, audio, video | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Alessandro1040/pianovam-quickstart/blob/main/pianovam_quickstart.ipynb) |
+| `pianovam_video2midi.ipynb` | prende il **video di un esempio qualsiasi** e ne stima il **MIDI** col modello, poi lo mette accanto a quello registrato dal pianoforte: P/R/F1, piano roll, ascolto A/B | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Alessandro1040/pianovam-quickstart/blob/main/pianovam_video2midi.ipynb) |
+
+## Video -> MIDI: `pianovam_video2midi.ipynb`
+
+Scegli un esempio **con un indice da 1 a 107** (la cella 2 stampa la tabella completa con
+pianista, split, brano e durata), e il notebook ti mostra:
+
+1. il **video con l'audio originale** (estratto di 15 s a 640 px; il file intero resta sul disco);
+2. il **MIDI originale**, quello registrato dal pianoforte digitale, con statistiche e ascolto;
+3. il **MIDI stimato dal modello** a partire dal solo video;
+4. il **confronto**: precision/recall/F1 a 50 ms, errore medio sugli onset, i due MIDI in un
+   piano roll uno sopra l'altro, e l'ascolto A/B — stesso sintetizzatore per entrambi, cosi'
+   l'unica differenza che senti sono le note che il modello prende e quelle che si perde.
+
+Con `MODE = "upload"` nella cella 0 carichi invece **un video tuo**: li' non c'e' nessun
+MIDI di riferimento da confrontare, ma il MIDI stimato esce lo stesso (con la griglia per
+leggere a mano i 4 angoli della tastiera, perche' il rilevamento automatico non e' ancora
+abbastanza preciso).
+
+**Cosa serve.** Il notebook si prende da solo codice e pesi: clona il repo pubblico
+[`pianovam-video2midi`](https://github.com/Alessandro1040/pianovam-video2midi) (~6 MB, pesi
+dell'epoca 9 inclusi). Se il clone non passa — o lavori offline — ripiega su uno **zip di
+~1 MB**, quello di
+
+    python3 scripts/pack_colab_bundle.py       # dentro pianovam-video2midi
+
+**Cosa aspettarsi.** F1 sulle note a soglia 0.70, dai report del progetto: 0.73 su Changyun
+(test ufficiale, pianista mai visto), 0.80–0.82 su Taegyun, 0.93–0.94 su Yujeong, 0.47–0.48
+su Minwook (musica densa e veloce: il modello e' preciso ma se ne perde due terzi). Su un
+pianista nuovo l'errore tipico e' **non vedere** le note, non inventarle.
+
+**I limiti, scritti nel notebook e non nascosti:** la soglia 0.70 e' scelta sui pianisti
+visti in addestramento (se il caso tuo ha recall basso, prova 0.4–0.5); i pesi sono l'epoca 9
+scelta sull'F1 di **validazione** e non sulla loss; per un video tuo i 4 angoli li indichi a
+mano; le registrazioni a quattro mani sono fuori dalla distribuzione di addestramento.
+
+## File di sviluppo (non servono per usare il notebook)
+
+| file | cosa fa |
+|---|---|
+| `_make_notebook.py` | rigenera `pianovam_quickstart.ipynb` |
+| `_validate_notebook.py` | esegue le celle del quickstart fuori da Colab |
+| `_make_video2midi_notebook.py` | rigenera `pianovam_video2midi.ipynb` |
+| `_validate_video2midi.py` | esegue le celle del notebook video->MIDI fuori da Colab, con i dati locali (`python3 _validate_video2midi.py dataset` oppure `upload`) |
 
 ## Cosa stampa per ogni esempio
 
